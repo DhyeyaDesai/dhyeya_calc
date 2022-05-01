@@ -2,13 +2,13 @@ pipeline{
     agent any
     environment {
         dockerImage='v1'
-        registry = "preyasgarg/calc"
-        registryCredential = 'docker-login'
+        registry = "dhyeyadesai/dhyeya_calc"
+        registryCredential = 'docker_d'
     }
     stages {
-        stage('Clone GitHub Repository') {
+        stage('Clone GitHub Repo') {
             steps {
-                git url: 'https://github.com/preyasgarg/MyCalculator.git'//, branch: 'master',
+                git url: 'https://github.com/DhyeyaDesai/dhyeya_calc.git', branch: 'main'
                 // credentialsId: 'github_token'
             }
         }
@@ -24,12 +24,9 @@ pipeline{
         }
         stage('Building our image') {
             steps{
-                
                 script {
                     dockerImage = docker.build registry + ":$dockerImage"
-                }
-            
-                
+                }        
             }
         }
         stage('Deploy our image') {
@@ -51,6 +48,5 @@ pipeline{
                   ansiblePlaybook colorized: true, disableHostKeyChecking: true, installation: 'Ansible', inventory: 'inventory', playbook: 'p2.yml'
              }
         }
-        
     }
 }
